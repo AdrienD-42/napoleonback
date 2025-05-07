@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
 import { BatailleService } from './bataille.service';
 import {Bataille} from "./Bataille";
+import {isString} from "class-validator";
 
 
 @Controller('bataille')
