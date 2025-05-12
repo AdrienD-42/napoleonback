@@ -1,50 +1,93 @@
-import {isBoolean, isDate, IsNotEmpty, isNumber, isString, MaxDate, MinDate, ValidateNested} from "class-validator";
-import {Type} from "class-transformer";
+import {
+    IsBoolean,
+    IsDate,
+    IsNotEmpty,
+    IsNumber,
+    IsString,
+    MaxDate,
+    MinDate, MinLength,
+    ValidateNested
+} from "class-validator";
+import { Type } from "class-transformer";
 
-export  class Bataille {
-constructor(
-    @isNumber
+export class Description {
+    @IsString()
     @IsNotEmpty()
-    public id : Number ,
-    @isString
+    @MinLength(10, { message: 'la date et le lieu doivent faire au moins 1à caractéres' })
+    dateLieu: string;
+
+    @IsString()
     @IsNotEmpty()
-    public lieu: String ,
-    @isString
+    forcePresentes: string;
+
+    @IsString()
     @IsNotEmpty()
-    public nom : String ,
-    @isDate
+    pertes: string
+    @IsString()
     @IsNotEmpty()
+    situationGenerale: string;
+
+    constructor(
+        dateLieu: string,
+        forcePresentes: string,
+        situationGenerale: string ,
+        pertes  : string
+    ) {
+        this.dateLieu = dateLieu;
+        this.forcePresentes = forcePresentes;
+        this.situationGenerale = situationGenerale;
+        this.pertes = pertes ;
+    }
+}
+
+export class Bataille {
+    @IsNumber()
+    @IsNotEmpty()
+    id: number;
+
+    @IsString()
+    @IsNotEmpty()
+    lieu: string;
+
+    @IsString()
+    @IsNotEmpty()
+    nom: string;
+
+    @IsDate()
     @Type(() => Date)
     @MinDate(new Date('1769-01-01'))
     @MaxDate(new Date('1821-05-05'))
-    public date : Date ,
-    @isBoolean
     @IsNotEmpty()
-    public victoire : Boolean ,
-    @isString
+    date: Date;
+
+    @IsBoolean()
     @IsNotEmpty()
-    public img : String,
+    victoire: boolean;
+
+    @IsString()
     @IsNotEmpty()
-    @Type(() => Description)
+    img: string;
+
     @ValidateNested()
-    public descritpion : Description
-) {
+    @Type(() => Description)
+    @IsNotEmpty()
+    description: Description;
 
-
-}
-
-
-}
-export class Description {
     constructor(
-        @isString
-        @IsNotEmpty()
-        public datelieu : String ,
-        @isString
-        @IsNotEmpty()
-        public forcesPresentes : String ,
-        @isString
-        @IsNotEmpty()
-        public situationsGenerale : String
-    ) {}
+        id: number,
+        lieu: string,
+        nom: string,
+        date: Date,
+        victoire: boolean,
+        img: string,
+        description: Description
+    ) {
+        this.id = id;
+        this.lieu = lieu;
+        this.nom = nom;
+        this.date = date;
+        this.victoire = victoire;
+        this.img = img;
+        this.description = description;
+    }
 }

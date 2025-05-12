@@ -25,7 +25,20 @@ export class BatailleService {
         await firstValueFrom(this.http.post(this.baseUrl, bataille));
     }
 
-    async delete(id: number): Promise<void> {
-        await firstValueFrom(this.http.delete(`${this.baseUrl}/${id}`));
+    async delete(id: number | string) {
+        const url = `http://localhost:5000/bataille/${id}`;
+        try {
+            await this.http.delete(url).toPromise();
+            return { message: `Bataille ${id} supprimée.` };
+        } catch (error) {
+            if (error.response?.status === 404) {
+                return { message: `Bataille ${id} inexistante.` };
+            }
+            throw error;
+        }
+    }
+
+    async update(id:number):Promise<void>{
+        await firstValueFrom(this.http.put(`${this.baseUrl}/${id}`));
     }
 }
